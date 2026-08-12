@@ -1,5 +1,5 @@
-import { type listItm } from '../Types/types';
-import '../styles/ListElemView.css';
+import { type listItm } from '../../Types/types';
+import '../../styles/ListElemView.css';
 
 interface ListElemViewProps {
     task: listItm;

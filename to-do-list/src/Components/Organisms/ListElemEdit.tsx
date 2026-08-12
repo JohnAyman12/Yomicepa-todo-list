@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { type listItm, priorityState } from '../Types/types';
-import TaskFields from './TaskFields';
-import '../styles/ListElemEdit.css';
+import { type listItm, priorityState } from '../../Types/types';
+import TaskFields from '../Molecules/TaskFields';
+import '../../styles/ListElemEdit.css';
 
 interface ListElemEditProps {
     task: listItm;

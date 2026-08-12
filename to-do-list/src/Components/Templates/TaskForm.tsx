@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { priorityState } from '../Types/types';
-import { useTasks } from '../Context/UseTasks';
-import TaskFields from './TaskFields';
-import '../styles/TaskForm.css';
+import { priorityState } from '../../Types/types';
+import { useTasks } from '../../Context/UseTasks';
+import TaskFields from '../Molecules/TaskFields';
+import '../../styles/TaskForm.css';
 
 export default function TaskForm() {
   const [priority, setPriority] = useState<priorityState>(priorityState.MEDIUM);

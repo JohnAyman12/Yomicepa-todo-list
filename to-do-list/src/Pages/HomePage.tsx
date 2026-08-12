@@ -1,7 +1,6 @@
 import { useTasks } from '../Context/UseTasks';
-import { type listItm } from '../Types/types';
-import TaskForm from '../Components/TaskForm';
-import ListElem from '../Components/ListElem';
+import TaskForm from '../Components/Templates/TaskForm';
+import TaskListGroup from '../Components/Templates/TaskListGroup';
 import '../styles/Homepage.css';
 
 export default function HomePage() {
@@ -16,23 +15,17 @@ export default function HomePage() {
             </section>
 
             <section className="task-list-section">
-                <h2>Tasks ({tasks.length})</h2>
+                <div className="task-list-header">
+                    <h2>Tasks</h2>
+                    <span className="task-count-badge">{tasks.length}</span>
+                </div>
 
-                {tasks.length === 0 ? (
-                    <p className="empty-state">No tasks created yet. Add one above!</p>
-                ) : (
-                    <div className="task-list">
-                        {tasks.map((task: listItm) => (
-                            <ListElem
-                                key={task.id}
-                                {...task}
-                                onToggleComplete={toggleTaskComplete}
-                                onDelete={deleteTask}
-                                onEdit={editTask}
-                            />
-                        ))}
-                    </div>
-                )}
+                <TaskListGroup
+                    tasks={tasks}
+                    onToggleComplete={toggleTaskComplete}
+                    onDelete={deleteTask}
+                    onEdit={editTask}
+                />
             </section>
         </div>
     );

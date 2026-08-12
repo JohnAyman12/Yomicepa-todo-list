@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { type listItm } from '../Types/types';
-import ListElemView from './ListElemView';
-import ListElemEdit from './ListElemEdit';
-import '../styles/ListElem.css';
+import { type listItm } from '../../Types/types';
+import ListElemView from '../Organisms/ListElemView';
+import ListElemEdit from '../Organisms/ListElemEdit';
+import '../../styles/ListElem.css';
 
 interface ListElemProps extends listItm {
     onToggleComplete: (id: string) => void;

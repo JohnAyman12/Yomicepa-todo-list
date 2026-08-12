@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { type listItm, priorityState } from '../Types/types';
+import { type listItm, priorityState } from '../../Types/types';
 
 interface TaskFieldsProps {
     initialValues?: Partial<listItm>;
