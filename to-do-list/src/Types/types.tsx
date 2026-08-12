@@ -22,7 +22,8 @@ export interface listItm {
 
 export interface TaskContextType {
     tasks: listItm[];
-    addTask: (task: Omit<listItm, 'id' | 'isChecked'>) => void; // same as listItm but without id and isChecked
+    addTask: (task: Omit<listItm, 'id' | 'isChecked'>) => void;
+    editTask: (id: string, updatedData: Partial<Omit<listItm, 'id'>>) => void;
     deleteTask: (id: string) => void;
     toggleTaskComplete: (id: string) => void;
 }

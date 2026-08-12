@@ -1,5 +1,3 @@
-// creates the useable method for other components to use the context
-
 import { useContext } from 'react';
 import { TaskContext } from './TaskContext';
 import { type TaskContextType } from '../Types/types';

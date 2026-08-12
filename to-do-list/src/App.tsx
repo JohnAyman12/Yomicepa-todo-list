@@ -1,4 +1,3 @@
-// src/App.tsx
 import Homepage from './Pages/HomePage';
 import { TaskProvider } from './Context/TaskProvider';
 
