@@ -18,26 +18,22 @@ export default function TaskListGroup({
         return <p className="empty-state">No tasks created yet. Add one above!</p>;
     }
 
-    // Priority weight mapping (High > Medium > Low)
-    const priorityRank: Record<priorityState, number> = {
+    const priorityRank: Record<priorityState, number> = { // to sort inside day based on priority
         [priorityState.HIGH]: 3,
         [priorityState.MEDIUM]: 2,
         [priorityState.LOW]: 1,
     };
 
-    // Group and sort tasks
     const groupTasksByDate = (taskList: listItm[]) => {
         const sortedTasks = [...taskList].sort((a, b) => {
-            // 1. Primary Sort: Date & Time (Ascending)
             const dateTimeA = new Date(`${a.date}T${a.time || '00:00'}`).getTime();
             const dateTimeB = new Date(`${b.date}T${b.time || '00:00'}`).getTime();
 
             if (dateTimeA !== dateTimeB) {
-                return dateTimeA - dateTimeB;
+                return dateTimeA - dateTimeB; // for date-time order
             }
 
-            // 2. Secondary Sort: Priority (High -> Medium -> Low)
-            return priorityRank[b.priority] - priorityRank[a.priority];
+            return priorityRank[b.priority] - priorityRank[a.priority]; // for priority order
         });
 
         const grouped: Record<string, listItm[]> = {};

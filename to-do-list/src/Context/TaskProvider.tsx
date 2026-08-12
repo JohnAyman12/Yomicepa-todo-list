@@ -1,11 +1,29 @@
 // core implementation of context provider (where the shared list lives) and manipulation functions
 
-import { useState, type ReactNode } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { type listItm } from '../Types/types';
 import { TaskContext } from './TaskContext';
 
+const STORAGE_KEY = 'todo_app_tasks';
+
 export function TaskProvider({ children }: { children: ReactNode }) {
-    const [tasks, setTasks] = useState<listItm[]>([]);
+    const [tasks, setTasks] = useState<listItm[]>(() => {
+        try {
+            const savedTasks = localStorage.getItem(STORAGE_KEY);
+            return savedTasks ? JSON.parse(savedTasks) : [];
+        } catch (error) {
+            console.error("Failed to load tasks from localStorage:", error);
+            return [];
+        }
+    });
+
+    useEffect(() => {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+        } catch (error) {
+            console.error("Failed to save tasks to localStorage:", error);
+        }
+    }, [tasks]);
 
     const addTask = (newTaskData: Omit<listItm, 'id' | 'isChecked'>) => {
         const newTask: listItm = {
@@ -30,13 +48,11 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     };
 
     const toggleTaskComplete = (id: string) => {
-        const taskToToggle = tasks.find(task => task.id === id);
-        if (taskToToggle) {
-            const updatedTask = { ...taskToToggle, isChecked: !taskToToggle.isChecked };
-            setTasks((prevTasks) =>
-                prevTasks.map((task) => (task.id === id ? updatedTask : task))
-            );
-        }
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === id ? { ...task, isChecked: !task.isChecked } : task
+            )
+        );
     };
 
     return (
