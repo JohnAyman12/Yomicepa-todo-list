@@ -1,0 +1,73 @@
+/* src/styles/TaskForm.css */
+
+/* Base form layout */
+.task-form-inline {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 1rem;
+    width: 100%;
+    padding: 1.25rem;
+    background-color: var(--card-bg, #1e293b);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 10px;
+    box-sizing: border-box;
+    transition: border-left-color 0.3s ease;
+}
+
+/* Spread Priority Indicator across the Left Edge of the Entire Form */
+.task-form-inline[data-priority="low"] {
+    border-left: 6px solid var(--priority-low, #10b981);
+}
+
+.task-form-inline[data-priority="medium"] {
+    border-left: 6px solid var(--priority-medium, #f59e0b);
+}
+
+.task-form-inline[data-priority="high"] {
+    border-left: 6px solid var(--priority-high, #ef4444);
+}
+
+.task-form-inline .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    flex: 1;
+    min-width: 120px;
+}
+
+.task-form-inline label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color, #f8fafc);
+}
+
+.task-form-inline input,
+.task-form-inline select {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    background-color: var(--input-bg, #0f172a);
+    border: 1px solid var(--border-color, #334155);
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.task-form-inline .add-btn {
+    padding: 0.65rem 1.25rem;
+    background-color: #3b82f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* Fallback for smaller screens */
+@media (max-width: 900px) {
+    .task-form-inline {
+        flex-wrap: wrap;
+    }
+}

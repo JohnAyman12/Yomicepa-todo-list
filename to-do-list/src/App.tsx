@@ -1,19 +1,10 @@
-import './App.css'
+// src/App.tsx
+import Homepage from './Pages/HomePage';
 
-function App() {
-
+export default function App() {
   return (
-    <><main>
-      <h2>Tasks</h2>
-      <form className="form">
-        <input type="text" className="form-input" />
-        <button type="submit" className="btn">add task</button>
-      </form>
-      <ul className="list"></ul>
-      <button className="test-btn">click me</button>
-    </main>
-    </>
-  )
+    <div className="app-container">
+      <Homepage />
+    </div>
+  );
 }
-
-export default App
