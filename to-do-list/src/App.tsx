@@ -1,10 +1,13 @@
 // src/App.tsx
 import Homepage from './Pages/HomePage';
+import { TaskProvider } from './Context/TaskProvider';
 
 export default function App() {
   return (
-    <div className="app-container">
-      <Homepage />
-    </div>
+    <TaskProvider>
+      <div className="app-container">
+        <Homepage />
+      </div>
+    </TaskProvider>
   );
 }

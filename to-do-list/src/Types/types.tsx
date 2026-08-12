@@ -1,14 +1,28 @@
 export enum priorityState {
     LOW = 'low',
     MEDIUM = 'medium',
-    HIGH = 'high'
+    HIGH = 'high',
 }
 
-export type listItm = {
-    name: string,
-    description: string,
-    date: string,
-    time: string,
-    isChecked: boolean,
-    priority: priorityState,
+export enum ListActionType {
+    ADD = 'add',
+    DELETE = 'delete',
+    EDIT = 'edit',
+}
+
+export interface listItm {
+    id: string;
+    name: string;
+    description: string;
+    date: string;
+    time: string;
+    priority: priorityState;
+    isChecked: boolean;
+}
+
+export interface TaskContextType {
+    tasks: listItm[];
+    addTask: (task: Omit<listItm, 'id' | 'isChecked'>) => void; // same as listItm but without id and isChecked
+    deleteTask: (id: string) => void;
+    toggleTaskComplete: (id: string) => void;
 }
