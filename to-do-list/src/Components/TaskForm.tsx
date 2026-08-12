@@ -2,28 +2,40 @@ import { useState } from 'react';
 import { priorityState } from '../Types/types'
 import '../styles/TaskForm.css';
 
-export default function TaskForm() {
+interface TaskFormProps {
+  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  onSubmit?: (e: React.SyntheticEvent<HTMLFormElement>) => void;
+}
+
+export default function TaskForm({ onChange, onSubmit }: TaskFormProps) {
+
   const [priority, setPriority] = useState<priorityState>(priorityState.MEDIUM);
+
+  const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setPriority(e.target.value as priorityState);
+    if (onChange) onChange(e);
+  };
+
   return (
-    <form className="task-form-inline" data-priority={priority}>
+    <form className="task-form-inline" data-priority={priority} onSubmit={onSubmit}>
       <div className="input-group">
         <label htmlFor="name">Task Name</label>
-        <input type="text" id="name" name="name" placeholder="Task name..." required />
+        <input type="text" id="name" name="name" placeholder="Task name..." required onChange={onChange} />
       </div>
 
       <div className="input-group">
         <label htmlFor="description">Description</label>
-        <input type="text" id="description" name="description" placeholder="Details..." />
+        <input type="text" id="description" name="description" placeholder="Details..." onChange={onChange} />
       </div>
 
       <div className="input-group">
         <label htmlFor="date">Date</label>
-        <input type="date" id="date" name="date" required />
+        <input type="date" id="date" name="date" required onChange={onChange} />
       </div>
 
       <div className="input-group">
         <label htmlFor="time">Time</label>
-        <input type="time" id="time" name="time" required />
+        <input type="time" id="time" name="time" required onChange={onChange} />
       </div>
 
       <div className="input-group">
@@ -32,7 +44,7 @@ export default function TaskForm() {
           id="priority"
           name="priority"
           value={priority}
-          onChange={(e) => setPriority(e.target.value as priorityState)}
+          onChange={handlePriorityChange}
           data-priority={priority} // Useful for dynamic CSS targeting
         >
           {Object.values(priorityState).map((level) => (

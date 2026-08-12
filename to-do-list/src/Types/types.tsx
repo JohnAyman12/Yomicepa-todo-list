@@ -7,7 +7,8 @@ export enum priorityState {
 export type listItm = {
     name: string,
     description: string,
-    date: Date,
+    date: string,
+    time: string,
     isChecked: boolean,
     priority: priorityState,
 }
