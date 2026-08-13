@@ -1,12 +1,15 @@
 import Homepage from './Pages/HomePage';
 import { TaskProvider } from './Context/TaskContext/TaskProvider';
+import { ThemeProvider } from './Context/ThemeContext/ThemeProvider';
 
 export default function App() {
   return (
-    <TaskProvider>
-      <div className="app-container">
-        <Homepage />
-      </div>
-    </TaskProvider>
+    <ThemeProvider>
+      <TaskProvider>
+        <div className="app-container">
+          <Homepage />
+        </div>
+      </TaskProvider>
+      </ThemeProvider>
   );
 }

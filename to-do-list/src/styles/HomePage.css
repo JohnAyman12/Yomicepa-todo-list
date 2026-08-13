@@ -3,17 +3,23 @@
     margin: 0 auto;
     padding: 2.5rem 1.5rem;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    color: #f8fafc;
+    color: var(--text-main);
+}
+
+.homepage-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 2rem;
+    gap: 1rem;
 }
 
 .homepage-title {
     font-size: 2.5rem;
     font-weight: 800;
-    text-align: center;
-    margin: 1rem 0 2rem 0;
-    display: block;
-    line-height: 1.5;
-    padding: 0.5rem 0;
+    margin: 0;
+    line-height: 1.2;
     background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
     -webkit-background-clip: text;
     background-clip: text;
@@ -39,7 +45,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid #334155;
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.75rem;
     margin-bottom: 0.5rem;
 }
@@ -47,13 +53,14 @@
 .task-list-header h2 {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #cbd5e1;
+    color: var(--text-heading);
     margin: 0;
 }
 
 .task-count-badge {
-    background-color: #334155;
-    color: #94a3b8;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
     font-size: 0.85rem;
     font-weight: 600;
     padding: 0.2rem 0.6rem;
@@ -69,10 +76,10 @@
 .empty-state {
     text-align: center;
     padding: 3rem 1.5rem;
-    background-color: rgba(30, 41, 59, 0.4);
-    border: 2px dashed #334155;
+    background-color: var(--bg-card);
+    border: 2px dashed var(--border-color);
     border-radius: 12px;
-    color: #64748b;
+    color: var(--text-muted);
     font-size: 1rem;
     margin: 0;
 }
@@ -82,7 +89,14 @@
         padding: 1.5rem 1rem;
     }
 
+    .homepage-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
     .homepage-title {
         font-size: 1.85rem;
+        text-align: center;
     }
 }

@@ -84,12 +84,10 @@ export default function TaskListGroup({
 
     return (
         <div className="task-list-wrapper">
-            {/* Sorting Header Bar */}
             <div className="task-list-controls">
                 <SortPanel currentSort={currentSort} onSortChange={setCurrentSort} />
             </div>
 
-            {/* Task Display Area */}
             <div className="task-list-content">
                 {currentSort === SortOption.DEFAULT ? (
                     <div className="task-groups">

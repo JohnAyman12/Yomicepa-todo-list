@@ -1,5 +1,6 @@
 import { type listItm } from '../../Types/types';
 import ListElem from '../Templates/ListElem';
+import '../../styles/DateGroup.css'
 
 interface DateGroupProps {
     date: string;

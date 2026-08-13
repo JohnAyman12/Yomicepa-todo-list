@@ -10,7 +10,7 @@
     appearance: none;
     width: 1.25rem;
     height: 1.25rem;
-    border: 2px solid #64748b;
+    border: 2px solid var(--text-muted);
     border-radius: 4px;
     background-color: transparent;
     cursor: pointer;
@@ -50,14 +50,14 @@
 .task-title {
     font-size: 1.15rem;
     font-weight: 600;
-    color: #f8fafc;
+    color: var(--text-main);
     margin: 0;
     word-break: break-word;
 }
 
 .task-description {
     font-size: 0.9rem;
-    color: #94a3b8;
+    color: var(--text-muted);
     margin: 0;
     line-height: 1.4;
     word-break: break-word;
@@ -70,7 +70,7 @@
     gap: 0.85rem;
     margin-top: 0.35rem;
     font-size: 0.825rem;
-    color: #cbd5e1;
+    color: var(--text-muted);
 }
 
 .task-date,
@@ -90,19 +90,19 @@
 
 .priority-badge.low {
     background-color: rgba(16, 185, 129, 0.15);
-    color: #34d399;
+    color: #10b981;
     border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .priority-badge.medium {
     background-color: rgba(245, 158, 11, 0.15);
-    color: #fbbf24;
+    color: #f59e0b;
     border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .priority-badge.high {
     background-color: rgba(239, 68, 68, 0.15);
-    color: #f87171;
+    color: #ef4444;
     border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
@@ -114,8 +114,9 @@
 }
 
 .btn-action {
-    background-color: #334155;
-    border: none;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
     border-radius: 6px;
     width: 2.25rem;
     height: 2.25rem;
@@ -133,10 +134,14 @@
 
 .edit-btn:hover {
     background-color: #f59e0b;
+    color: #ffffff;
+    border-color: #f59e0b;
 }
 
 .delete-btn:hover {
     background-color: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
 }
 
 @media (max-width: 520px) {

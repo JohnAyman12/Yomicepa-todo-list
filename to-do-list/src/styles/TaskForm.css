@@ -2,11 +2,11 @@
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    background-color: #1e293b;
+    background-color: var(--bg-card);
     padding: 1.5rem;
     border-radius: 12px;
-    border: 1px solid #334155;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
     width: 100%;
     box-sizing: border-box;
 }
@@ -64,7 +64,7 @@
 .input-group label {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #94a3b8;
+    color: var(--text-muted);
 }
 
 .input-group input,
@@ -72,20 +72,24 @@
     width: 100%;
     height: 42px;
     padding: 0 0.75rem;
-    background-color: #0f172a;
-    border: 1px solid #334155;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
-    color: #f8fafc;
+    color: var(--text-main);
     font-size: 0.9rem;
     outline: none;
     box-sizing: border-box;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
 }
 
 .input-group input:focus,
 .input-group select:focus {
     border-color: #3b82f6;
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.input-group input::-webkit-calendar-picker-indicator {
+    filter: var(--calendar-icon-filter, none);
 }
 
 .form-actions {

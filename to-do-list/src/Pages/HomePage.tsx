@@ -1,4 +1,5 @@
 import { useTasks } from '../Context/TaskContext/UseTasks';
+import ThemeToggle from '../Components/Atoms/ThemeToggle';
 import TaskForm from '../Components/Templates/TaskForm';
 import TaskListGroup from '../Components/Templates/TaskListGroup';
 import '../styles/Homepage.css';
@@ -8,7 +9,10 @@ export default function HomePage() {
 
     return (
         <div className="homepage-container">
-            <h1 className="homepage-title">Task Manager</h1>
+            <header className="homepage-header">
+                <h1 className="homepage-title">Task Manager</h1>
+                <ThemeToggle />
+            </header>
 
             <section className="form-section">
                 <TaskForm />
