@@ -11,6 +11,8 @@
 
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+    --calendar-icon-filter: none;
 }
 
 [data-theme='dark'] {
@@ -25,6 +27,8 @@
 
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
     --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+
+    --calendar-icon-filter: invert(1);
 }
 
 body {

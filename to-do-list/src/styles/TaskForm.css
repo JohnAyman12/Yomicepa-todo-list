@@ -90,6 +90,7 @@
 
 .input-group input::-webkit-calendar-picker-indicator {
     filter: var(--calendar-icon-filter, none);
+    cursor: pointer;
 }
 
 .form-actions {
