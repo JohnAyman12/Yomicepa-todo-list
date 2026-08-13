@@ -1,3 +1,4 @@
+// gives the components the ability to access the shared value
 import { useContext } from 'react';
 import { TaskContext } from './TaskContext';
 import { type TaskContextType } from '../../Types/types';
