@@ -1,4 +1,6 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Homepage from './Pages/HomePage';
+import TaskPage from './Pages/TaskPage'
 import { TaskProvider } from './Context/TaskContext/TaskProvider';
 import { ThemeProvider } from './Context/ThemeContext/ThemeProvider';
 
@@ -7,9 +9,14 @@ export default function App() {
     <ThemeProvider>
       <TaskProvider>
         <div className="app-container">
-          <Homepage />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Homepage />} />
+              <Route path="/task/:id" element={<TaskPage />} />
+            </Routes>
+          </BrowserRouter>
         </div>
       </TaskProvider>
-      </ThemeProvider>
+    </ThemeProvider>
   );
 }

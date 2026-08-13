@@ -1,4 +1,5 @@
 import { type listItm } from '../../Types/types';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/ListElemView.css';
 
 interface ListElemViewProps {
@@ -14,8 +15,19 @@ export default function ListElemView({
     onEditClick,
     onDelete,
 }: ListElemViewProps) {
+    const navigate = useNavigate();
+
+    const handleCardClick = (e: React.MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (target.closest('button') || target.closest('input')) {
+            return;
+        }
+
+        navigate(`/task/${task.id}`);
+    };
+
     return (
-        <>
+        <div className="task-card-content" onClick={handleCardClick}>
             <div className="task-card-left">
                 <input
                     type="checkbox"
@@ -40,6 +52,6 @@ export default function ListElemView({
                 <button type="button" className="btn-action edit-btn" onClick={onEditClick} title="Edit Task">✏️</button>
                 <button type="button" className="btn-action delete-btn" onClick={() => onDelete?.(task.id)} title="Delete Task">🗑️</button>
             </div>
-        </>
+        </div>
     );
 }

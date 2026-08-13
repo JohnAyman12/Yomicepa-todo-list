@@ -1,0 +1,42 @@
+.task-page-container {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.task-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.btn-back {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    padding: 0.55rem 1.1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-back:hover {
+    background-color: var(--bg-input);
+    border-color: var(--text-muted);
+    transform: translateX(-2px);
+}
+
+.task-page-content {
+    width: 100%;
+}
