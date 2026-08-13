@@ -1,5 +1,5 @@
 import Homepage from './Pages/HomePage';
-import { TaskProvider } from './Context/TaskProvider';
+import { TaskProvider } from './Context/TaskContext/TaskProvider';
 
 export default function App() {
   return (

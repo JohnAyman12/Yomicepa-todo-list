@@ -1,7 +1,7 @@
 // core implementation of context provider (where the shared list lives) and manipulation functions
 
 import { useState, useEffect, type ReactNode } from 'react';
-import { type listItm } from '../Types/types';
+import { type listItm } from '../../Types/types';
 import { TaskContext } from './TaskContext';
 
 const STORAGE_KEY = 'todo_app_tasks';

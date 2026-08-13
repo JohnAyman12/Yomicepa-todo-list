@@ -27,3 +27,10 @@ export interface TaskContextType {
     deleteTask: (id: string) => void;
     toggleTaskComplete: (id: string) => void;
 }
+
+export enum SortOption {
+    DEFAULT = 'DEFAULT',
+    ALPHABETICAL = 'ALPHABETICAL',
+    DATE = 'DATE',
+    PRIORITY = 'PRIORITY',
+}

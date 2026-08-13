@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { priorityState } from '../../Types/types';
-import { useTasks } from '../../Context/UseTasks';
+import { useTasks } from '../../Context/TaskContext/UseTasks';
 import TaskFields from '../Molecules/TaskFields';
 import '../../styles/TaskForm.css';
 
