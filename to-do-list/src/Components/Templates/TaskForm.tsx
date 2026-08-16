@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { priorityState } from '../../Types/types';
+import { type priorityState } from '../../Types/types';
 import { useTasks } from '../../Context/TaskContext/UseTasks';
 import TaskFields from '../Molecules/TaskFields';
 import '../../styles/TaskForm.css';
 
 export default function TaskForm() {
-  const [priority, setPriority] = useState<priorityState>(priorityState.MEDIUM);
+  const [priority, setPriority] = useState<priorityState>("medium");
   const { addTask } = useTasks();
 
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -22,7 +22,7 @@ export default function TaskForm() {
     });
 
     form.reset();
-    setPriority(priorityState.MEDIUM);
+    setPriority("medium");
   };
 
   return (

@@ -1,4 +1,4 @@
-import { SortOption } from '../../Types/types';
+import { type SortOption, SORT_OPTIONS } from '../../Types/types';
 import '../../styles/SortPanel.css';
 
 interface SortPanelProps {
@@ -18,10 +18,11 @@ export default function SortPanel({ currentSort, onSortChange }: SortPanelProps)
                 onChange={(e) => onSortChange(e.target.value as SortOption)}
                 className="sort-select"
             >
-                <option value={SortOption.DEFAULT}>📅 Default (Grouped by Date)</option>
-                <option value={SortOption.ALPHABETICAL}>🔤 Alphabetical (A - Z)</option>
-                <option value={SortOption.DATE}>⏰ Date & Time (Flat)</option>
-                <option value={SortOption.PRIORITY}>🔥 Priority (High to Low)</option>
+                {SORT_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
             </select>
         </div>
     );

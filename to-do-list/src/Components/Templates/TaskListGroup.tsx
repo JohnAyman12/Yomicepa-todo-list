@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { type listItm, priorityState, SortOption } from '../../Types/types';
+import { type listItm, type priorityState, type SortOption } from '../../Types/types';
 import DateGroup from '../Organisms/DateGroup';
 import ListElem from './ListElem';
 import SortPanel from './SortPanel';
@@ -18,34 +18,34 @@ export default function TaskListGroup({
     onDelete,
     onEdit,
 }: TaskListGroupProps) {
-    const [currentSort, setCurrentSort] = useState<SortOption>(SortOption.DEFAULT);
+    const [currentSort, setCurrentSort] = useState<SortOption>("DEFAULT");
 
     if (tasks.length === 0) {
         return <p className="empty-state">No tasks created yet. Add one above!</p>;
     }
 
     const priorityRank: Record<priorityState, number> = {
-        [priorityState.HIGH]: 3,
-        [priorityState.MEDIUM]: 2,
-        [priorityState.LOW]: 1,
-    };
+        high: 3,
+        medium: 2,
+        low: 1,
+    };;
 
     const getSortedTasks = () => {
         const listCopy = [...tasks];
 
         switch (currentSort) {
-            case SortOption.DEFAULT:
+            case 'DEFAULT':
                 return listCopy;
 
-            case SortOption.ALPHABETICAL:
+            case 'ALPHABETICAL':
                 return listCopy.sort((a, b) => a.name.localeCompare(b.name));
 
-            case SortOption.PRIORITY:
+            case 'PRIORITY':
                 return listCopy.sort(
                     (a, b) => priorityRank[b.priority] - priorityRank[a.priority]
                 );
 
-            case SortOption.DATE:
+            case 'DATE':
                 return listCopy.sort((a, b) => {
                     const dateTimeA = new Date(`${a.date}T${a.time || '00:00'}`).getTime();
                     const dateTimeB = new Date(`${b.date}T${b.time || '00:00'}`).getTime();
@@ -89,7 +89,7 @@ export default function TaskListGroup({
             </div>
 
             <div className="task-list-content">
-                {currentSort === SortOption.DEFAULT ? (
+                {currentSort === "DEFAULT" ? (
                     <div className="task-groups">
                         {Object.entries(groupTasksByDate(tasks)).map(([date, items]) => (
                             <DateGroup

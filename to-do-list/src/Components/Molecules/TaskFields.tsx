@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { type listItm, priorityState } from '../../Types/types';
+import { type listItm, type priorityState, PRIORITY_OPTIONS } from '../../Types/types';
 
 interface TaskFieldsProps {
     initialValues?: Partial<listItm>;
@@ -8,7 +8,7 @@ interface TaskFieldsProps {
 
 export default function TaskFields({ initialValues, onPriorityChange }: TaskFieldsProps) {
     const [priority, setPriority] = useState<priorityState>(
-        initialValues?.priority || priorityState.MEDIUM
+        initialValues?.priority || "medium"
     );
 
     const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -72,7 +72,7 @@ export default function TaskFields({ initialValues, onPriorityChange }: TaskFiel
                     value={priority}
                     onChange={handlePriorityChange}
                 >
-                    {Object.values(priorityState).map((level) => (
+                    {PRIORITY_OPTIONS.map((level) => (
                         <option key={level} value={level}>
                             {level.charAt(0).toUpperCase() + level.slice(1)}
                         </option>
