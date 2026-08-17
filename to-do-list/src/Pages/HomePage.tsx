@@ -2,7 +2,7 @@ import { useTasks } from '../Context/TaskContext/UseTasks';
 import ThemeToggle from '../Components/Atoms/ThemeToggle';
 import TaskForm from '../Components/Templates/TaskForm';
 import TaskListGroup from '../Components/Templates/TaskListGroup';
-import '../styles/Homepage.css';
+import '../styles/HomePage.css';
 
 export default function HomePage() {
     const { tasks } = useTasks();

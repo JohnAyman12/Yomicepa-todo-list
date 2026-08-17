@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 import { type listItm, type priorityState, PRIORITY_OPTIONS } from '../../Types/types';
 
 interface TaskFieldsProps {
@@ -7,6 +7,14 @@ interface TaskFieldsProps {
 }
 
 export default function TaskFields({ initialValues, onPriorityChange }: TaskFieldsProps) {
+    const baseId = useId();
+
+    const nameId = `${baseId}-name`;
+    const descId = `${baseId}-description`;
+    const dateId = `${baseId}-date`;
+    const timeId = `${baseId}-time`;
+    const priorityId = `${baseId}-priority`;
+
     const [priority, setPriority] = useState<priorityState>(
         initialValues?.priority || "medium"
     );
@@ -20,10 +28,10 @@ export default function TaskFields({ initialValues, onPriorityChange }: TaskFiel
     return (
         <div className="task-fields-grid">
             <div className="input-group">
-                <label htmlFor="name">Task Name</label>
+                <label htmlFor={nameId}>Task Name</label>
                 <input
                     type="text"
-                    id="name"
+                    id={nameId}
                     name="name"
                     defaultValue={initialValues?.name || ''}
                     placeholder="Task name..."
@@ -32,10 +40,10 @@ export default function TaskFields({ initialValues, onPriorityChange }: TaskFiel
             </div>
 
             <div className="input-group">
-                <label htmlFor="description">Description</label>
+                <label htmlFor={descId}>Description</label>
                 <input
                     type="text"
-                    id="description"
+                    id={descId}
                     name="description"
                     defaultValue={initialValues?.description || ''}
                     placeholder="Details..."
@@ -43,10 +51,10 @@ export default function TaskFields({ initialValues, onPriorityChange }: TaskFiel
             </div>
 
             <div className="input-group">
-                <label htmlFor="date">Date</label>
+                <label htmlFor={dateId}>Date</label>
                 <input
                     type="date"
-                    id="date"
+                    id={dateId}
                     name="date"
                     defaultValue={initialValues?.date || ''}
                     required
@@ -54,10 +62,10 @@ export default function TaskFields({ initialValues, onPriorityChange }: TaskFiel
             </div>
 
             <div className="input-group">
-                <label htmlFor="time">Time</label>
+                <label htmlFor={timeId}>Time</label>
                 <input
                     type="time"
-                    id="time"
+                    id={timeId}
                     name="time"
                     defaultValue={initialValues?.time || ''}
                     required
@@ -65,9 +73,9 @@ export default function TaskFields({ initialValues, onPriorityChange }: TaskFiel
             </div>
 
             <div className="input-group">
-                <label htmlFor="priority">Priority</label>
+                <label htmlFor={priorityId}>Priority</label>
                 <select
-                    id="priority"
+                    id={priorityId}
                     name="priority"
                     value={priority}
                     onChange={handlePriorityChange}
