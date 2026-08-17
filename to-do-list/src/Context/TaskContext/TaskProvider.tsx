@@ -40,7 +40,6 @@ export function TaskProvider({ children }: { children: ReactNode }) {
                 task.id === id ? { ...task, ...updatedData } : task
             )
         );
-        console.log("Task Edited: ", updatedData);
     };
 
     const deleteTask = (id: string) => {

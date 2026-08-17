@@ -26,9 +26,6 @@ export default function HomePage() {
 
                 <TaskListGroup
                     tasks={tasks}
-                    // onToggleComplete={toggleTaskComplete}
-                    // onDelete={deleteTask}
-                    // onEdit={editTask}
                 />
             </section>
         </div>

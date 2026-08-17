@@ -1,5 +1,5 @@
 import { type listItm } from '../../Types/types';
-import ListElem from '../Templates/ListElem';
+import ListElem from './ListElem';
 import '../../styles/DateGroup.css'
 
 interface DateGroupProps {
@@ -7,23 +7,28 @@ interface DateGroupProps {
     tasks: listItm[];
 }
 
+const formatDateHeader = (dateString: string) => {
+    if (!dateString) return 'No Date';
+
+    const [year, month, day] = dateString.split('-').map(Number);
+    const dateObj = new Date(year, month - 1, day);
+
+    if (isNaN(dateObj.getTime())) {
+        return 'Invalid Date';
+    }
+
+    return dateObj.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+    });
+};
+
 export default function DateGroup({
     date,
     tasks,
 }: DateGroupProps) {
-    const formatDateHeader = (dateString: string) => {
-        if (!dateString) return 'No Date';
-        const [year, month, day] = dateString.split('-').map(Number);
-        const dateObj = new Date(year, month - 1, day);
-
-        return dateObj.toLocaleDateString('en-US', {
-            weekday: 'long',
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-        });
-    };
-
     return (
         <div className="date-group">
             <h3 className="date-group-header">📅 {formatDateHeader(date)}</h3>

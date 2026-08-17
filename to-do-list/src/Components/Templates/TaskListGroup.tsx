@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { type listItm, type priorityState, type SortOption } from '../../Types/types';
-import DateGroup from '../Organisms/DateGroup';
+import DateGroup from './SameDateGroup';
 import ListElem from './ListElem';
 import SortPanel from './SortPanel';
 import '../../styles/TaskListGroup.css';
