@@ -14,6 +14,8 @@ export interface listItm {
 
 export interface TaskContextType {
     tasks: listItm[];
+    storageError: string | null;
+    clearStorageError: () => void;
     addTask: (task: Omit<listItm, 'id' | 'isChecked'>) => void;
     editTask: (id: string, updatedData: Partial<Omit<listItm, 'id'>>) => void;
     deleteTask: (id: string) => void;

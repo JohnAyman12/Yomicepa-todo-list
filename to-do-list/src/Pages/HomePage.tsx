@@ -1,5 +1,6 @@
 import { useTasks } from '../Context/TaskContext/UseTasks';
 import ThemeToggle from '../Components/Atoms/ThemeToggle';
+import StorageErrorBanner from '../Components/Molecules/StorageErrorBanner';
 import TaskForm from '../Components/Templates/TaskForm';
 import TaskListGroup from '../Components/Templates/TaskListGroup';
 import '../styles/HomePage.css';
@@ -13,7 +14,7 @@ export default function HomePage() {
                 <h1 className="homepage-title">Task Manager</h1>
                 <ThemeToggle />
             </header>
-
+            <StorageErrorBanner />
             <section className="form-section">
                 <TaskForm />
             </section>

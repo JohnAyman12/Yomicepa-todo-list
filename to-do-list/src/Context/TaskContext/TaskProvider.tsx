@@ -1,61 +1,132 @@
 // core implementation of context provider (where the shared list lives) and manipulation functions
 
-import { useState, useEffect, type ReactNode } from 'react';
-import { type listItm } from '../../Types/types';
+import { useState, useEffect, useCallback, useMemo, type ReactNode } from 'react';
+import { type listItm, type priorityState } from '../../Types/types';
 import { TaskContext } from './TaskContext';
 
 const STORAGE_KEY = 'todo_app_tasks';
+const VALID_PRIORITIES: priorityState[] = ['high', 'medium', 'low'];
 
-export function TaskProvider({ children }: { children: ReactNode }) {
-    const [tasks, setTasks] = useState<listItm[]>(() => {
-        try {
-            const savedTasks = localStorage.getItem(STORAGE_KEY);
-            return savedTasks ? JSON.parse(savedTasks) : [];
-        } catch (error) {
-            console.error("Failed to load tasks from localStorage:", error);
+const isListItm = (item: unknown): item is listItm => {
+    if (typeof item !== 'object' || item === null) return false;
+
+    const t = item as Record<string, unknown>;
+
+    return (
+        typeof t.id === 'string' &&
+        typeof t.name === 'string' &&
+        typeof t.description === 'string' &&
+        typeof t.date === 'string' &&
+        typeof t.time === 'string' &&
+        typeof t.isChecked === 'boolean' &&
+        typeof t.priority === 'string' &&
+        VALID_PRIORITIES.includes(t.priority as priorityState)
+    );
+};
+
+const parseAndValidateTasks = (rawJson: string | null): listItm[] => {
+    if (!rawJson) return [];
+
+    try {
+        const parsed = JSON.parse(rawJson);
+
+        if (!Array.isArray(parsed)) {
             return [];
         }
+
+        const isValid = parsed.every(isListItm);
+        if (!isValid) {
+            return [];
+        }
+
+        return parsed as listItm[];
+    } catch {
+        return [];
+    }
+};
+
+const saveToLocalStorage = (tasks: listItm[]): string | null => {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+        return null;
+    } catch {
+        return 'Warning: Changes could not be saved to local storage. You may be out of space or in Private Mode.';
+    }
+};
+
+export function TaskProvider({ children }: { children: ReactNode }) {
+    const [storageError, setStorageError] = useState<string | null>(null);
+
+    const [tasks, setTasks] = useState<listItm[]>(() => {
+        const savedTasks = localStorage.getItem(STORAGE_KEY);
+        return parseAndValidateTasks(savedTasks);
     });
 
     useEffect(() => {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-        } catch (error) {
-            console.error("Failed to save tasks to localStorage:", error);
-        }
-    }, [tasks]);
+        const handleStorageChange = (e: StorageEvent) => {
+            if (e.key === STORAGE_KEY) {
+                const validatedTasks = parseAndValidateTasks(e.newValue);
+                setTasks(validatedTasks);
+            }
+        };
 
-    const addTask = (newTaskData: Omit<listItm, 'id' | 'isChecked'>) => {
+        window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+
+    const updateTasksAndPersist = useCallback((updateFn: (prev: listItm[]) => listItm[]) => {
+        setTasks((prevTasks) => {
+            const nextTasks = updateFn(prevTasks);
+            const err = saveToLocalStorage(nextTasks);
+            setStorageError(err);
+            return nextTasks;
+        });
+    }, []);
+
+    const clearStorageError = useCallback(() => {
+        setStorageError(null);
+    }, []);
+
+    const addTask = useCallback((newTaskData: Omit<listItm, 'id' | 'isChecked'>) => {
         const newTask: listItm = {
             ...newTaskData,
             id: crypto.randomUUID(),
             isChecked: false,
         };
-        setTasks((prevTasks) => [...prevTasks, newTask]);
-    };
+        updateTasksAndPersist((prev) => [...prev, newTask]);
+    }, [updateTasksAndPersist]);
 
-    const editTask = (id: string, updatedData: Partial<Omit<listItm, 'id'>>) => {
-        setTasks((prevTasks) =>
-            prevTasks.map((task) =>
-                task.id === id ? { ...task, ...updatedData } : task
-            )
+    const editTask = useCallback((id: string, updatedData: Partial<Omit<listItm, 'id'>>) => {
+        updateTasksAndPersist((prev) =>
+            prev.map((task) => (task.id === id ? { ...task, ...updatedData } : task))
         );
-    };
+    }, [updateTasksAndPersist]);
 
-    const deleteTask = (id: string) => {
-        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
-    };
+    const deleteTask = useCallback((id: string) => {
+        updateTasksAndPersist((prev) => prev.filter((task) => task.id !== id));
+    }, [updateTasksAndPersist]);
 
-    const toggleTaskComplete = (id: string) => {
-        setTasks((prevTasks) =>
-            prevTasks.map((task) =>
-                task.id === id ? { ...task, isChecked: !task.isChecked } : task
-            )
+    const toggleTaskComplete = useCallback((id: string) => {
+        updateTasksAndPersist((prev) =>
+            prev.map((task) => (task.id === id ? { ...task, isChecked: !task.isChecked } : task))
         );
-    };
+    }, [updateTasksAndPersist]);
+
+    const contextValue = useMemo(
+        () => ({
+            tasks,
+            storageError,
+            clearStorageError,
+            addTask,
+            editTask,
+            deleteTask,
+            toggleTaskComplete,
+        }),
+        [tasks, storageError, clearStorageError, addTask, editTask, deleteTask, toggleTaskComplete]
+    );
 
     return (
-        <TaskContext.Provider value={{ tasks, addTask, editTask, deleteTask, toggleTaskComplete }}>
+        <TaskContext.Provider value={contextValue}>
             {children}
         </TaskContext.Provider>
     );
