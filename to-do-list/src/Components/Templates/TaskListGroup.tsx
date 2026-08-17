@@ -1,86 +1,91 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { type listItm, type priorityState, type SortOption } from '../../Types/types';
 import DateGroup from '../Organisms/DateGroup';
 import ListElem from './ListElem';
 import SortPanel from './SortPanel';
-import '../../styles/TaskListGroup.css'
+import '../../styles/TaskListGroup.css';
 
 interface TaskListGroupProps {
     tasks: listItm[];
-    onToggleComplete: (id: string) => void;
-    onDelete: (id: string) => void;
-    onEdit: (id: string, updatedData: Partial<Omit<listItm, 'id'>>) => void;
 }
 
-export default function TaskListGroup({
-    tasks,
-    onToggleComplete,
-    onDelete,
-    onEdit,
-}: TaskListGroupProps) {
-    const [currentSort, setCurrentSort] = useState<SortOption>("DEFAULT");
+const PRIORITY_RANK: Record<priorityState, number> = {
+    high: 3,
+    medium: 2,
+    low: 1,
+};
+
+const parseTaskDateTime = (dateStr: string, timeStr?: string): number => {
+    if (!dateStr) return Infinity;
+    const parsed = new Date(`${dateStr}T${timeStr || '00:00'}`).getTime();
+    return Number.isNaN(parsed) ? Infinity : parsed;
+};
+
+const getSortedTasks = (tasks: listItm[], sortOption: SortOption): listItm[] => {
+    const listCopy = [...tasks];
+
+    switch (sortOption) {
+        case 'DEFAULT':
+            return listCopy;
+
+        case 'ALPHABETICAL':
+            return listCopy.sort((a, b) => a.name.localeCompare(b.name));
+
+        case 'PRIORITY':
+            return listCopy.sort(
+                (a, b) => (PRIORITY_RANK[b.priority] ?? 0) - (PRIORITY_RANK[a.priority] ?? 0)
+            );
+
+        case 'DATE':
+            return listCopy.sort((a, b) => {
+                const dateTimeA = parseTaskDateTime(a.date, a.time);
+                const dateTimeB = parseTaskDateTime(b.date, b.time);
+                return dateTimeA - dateTimeB;
+            });
+
+        default: {
+            const _exhaustiveCheck: never = sortOption;
+            console.error(`Unhandled sort option: ${JSON.stringify(_exhaustiveCheck)}`);
+            return listCopy;
+        }
+    }
+};
+
+const groupTasksByDate = (taskList: listItm[]): Record<string, listItm[]> => {
+    const sortedTasks = [...taskList].sort((a, b) => {
+        const dateTimeA = parseTaskDateTime(a.date, a.time);
+        const dateTimeB = parseTaskDateTime(b.date, b.time);
+
+        if (dateTimeA !== dateTimeB) {
+            return dateTimeA - dateTimeB;
+        }
+        return (PRIORITY_RANK[b.priority] ?? 0) - (PRIORITY_RANK[a.priority] ?? 0);
+    });
+
+    const grouped: Record<string, listItm[]> = {};
+    sortedTasks.forEach((task) => {
+        const dateKey = task.date || 'No Date';
+        if (!grouped[dateKey]) grouped[dateKey] = [];
+        grouped[dateKey].push(task);
+    });
+
+    return grouped;
+};
+
+export default function TaskListGroup({ tasks }: TaskListGroupProps) {
+    const [currentSort, setCurrentSort] = useState<SortOption>('DEFAULT');
+
+    const sortedTasks = useMemo(() => {
+        return getSortedTasks(tasks, currentSort);
+    }, [tasks, currentSort]);
+
+    const groupedTasks = useMemo(() => {
+        return groupTasksByDate(tasks);
+    }, [tasks]);
 
     if (tasks.length === 0) {
         return <p className="empty-state">No tasks created yet. Add one above!</p>;
     }
-
-    const priorityRank: Record<priorityState, number> = {
-        high: 3,
-        medium: 2,
-        low: 1,
-    };;
-
-    const getSortedTasks = () => {
-        const listCopy = [...tasks];
-
-        switch (currentSort) {
-            case 'DEFAULT':
-                return listCopy;
-
-            case 'ALPHABETICAL':
-                return listCopy.sort((a, b) => a.name.localeCompare(b.name));
-
-            case 'PRIORITY':
-                return listCopy.sort(
-                    (a, b) => priorityRank[b.priority] - priorityRank[a.priority]
-                );
-
-            case 'DATE':
-                return listCopy.sort((a, b) => {
-                    const dateTimeA = new Date(`${a.date}T${a.time || '00:00'}`).getTime();
-                    const dateTimeB = new Date(`${b.date}T${b.time || '00:00'}`).getTime();
-                    return dateTimeA - dateTimeB;
-                });
-
-            default: {
-                const _exhaustiveCheck: never = currentSort;
-                console.error(`Unhandled sort option: ${JSON.stringify(_exhaustiveCheck)}`);
-
-                return listCopy;
-            }
-        }
-    };
-
-    const groupTasksByDate = (taskList: listItm[]) => {
-        const sortedTasks = [...taskList].sort((a, b) => {
-            const dateTimeA = new Date(`${a.date}T${a.time || '00:00'}`).getTime();
-            const dateTimeB = new Date(`${b.date}T${b.time || '00:00'}`).getTime();
-
-            if (dateTimeA !== dateTimeB) {
-                return dateTimeA - dateTimeB;
-            }
-            return priorityRank[b.priority] - priorityRank[a.priority];
-        });
-
-        const grouped: Record<string, listItm[]> = {};
-        sortedTasks.forEach((task) => {
-            const dateKey = task.date;
-            if (!grouped[dateKey]) grouped[dateKey] = [];
-            grouped[dateKey].push(task);
-        });
-
-        return grouped;
-    };
 
     return (
         <div className="task-list-wrapper">
@@ -89,28 +94,22 @@ export default function TaskListGroup({
             </div>
 
             <div className="task-list-content">
-                {currentSort === "DEFAULT" ? (
+                {currentSort === 'DEFAULT' ? (
                     <div className="task-groups">
-                        {Object.entries(groupTasksByDate(tasks)).map(([date, items]) => (
+                        {Object.entries(groupedTasks).map(([date, items]) => (
                             <DateGroup
                                 key={date}
                                 date={date}
                                 tasks={items}
-                                onToggleComplete={onToggleComplete}
-                                onDelete={onDelete}
-                                onEdit={onEdit}
                             />
                         ))}
                     </div>
                 ) : (
                     <div className="task-list">
-                        {getSortedTasks().map((task) => (
+                        {sortedTasks.map((task) => (
                             <ListElem
                                 key={task.id}
-                                {...task}
-                                onToggleComplete={onToggleComplete}
-                                onDelete={onDelete}
-                                onEdit={onEdit}
+                                task={task}
                             />
                         ))}
                     </div>

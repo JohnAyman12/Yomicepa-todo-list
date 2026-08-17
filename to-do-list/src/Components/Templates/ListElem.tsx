@@ -4,37 +4,31 @@ import ListElemView from '../Organisms/ListElemView';
 import ListElemEdit from '../Organisms/ListElemEdit';
 import '../../styles/ListElem.css';
 
-interface ListElemProps extends listItm {
-    onToggleComplete: (id: string) => void;
-    onEdit: (id: string, updatedData: Partial<Omit<listItm, 'id'>>) => void; // partial makes all properties of interface optional
-    onDelete: (id: string) => void;
+interface ListElemProps {
+    task: listItm;
+    onDeleteSuccess?: () => void;
 }
 
-export default function ListElem(props: ListElemProps) {
+export default function ListElem({ task,onDeleteSuccess }: ListElemProps) {
     const [isEditing, setIsEditing] = useState(false);
 
-    const handleSave = (updatedData: Partial<Omit<listItm, 'id'>>) => {
-        props.onEdit(props.id, updatedData);
-        setIsEditing(false);
-    };
+    if (!task) return null;
 
     return (
         <div
-            className={`task-card ${props.isChecked ? 'completed' : ''} ${isEditing ? 'editing' : ''}`}
-            data-priority={props.priority}
+            className={`task-card ${task.isChecked ? 'completed' : ''} ${isEditing ? 'editing' : ''}`}
+            data-priority={task.priority}
         >
             {isEditing ? (
                 <ListElemEdit
-                    task={props}
-                    onSave={handleSave}
+                    task={task}
                     onCancel={() => setIsEditing(false)}
                 />
             ) : (
                 <ListElemView
-                    task={props}
-                    onToggleComplete={props.onToggleComplete}
+                    task={task}
                     onEditClick={() => setIsEditing(true)}
-                    onDelete={props.onDelete}
+                    onDeleteSuccess={onDeleteSuccess}
                 />
             )}
         </div>

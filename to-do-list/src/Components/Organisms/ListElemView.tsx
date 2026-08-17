@@ -1,23 +1,19 @@
 import { useState } from 'react';
-import { type listItm } from '../../Types/types';
 import { useNavigate } from 'react-router-dom';
+import { type listItm } from '../../Types/types';
+import { useTasks } from '../../Context/TaskContext/UseTasks';
 import DeleteModal from '../Molecules/DeleteModal';
 import '../../styles/ListElemView.css';
 
 interface ListElemViewProps {
     task: listItm;
-    onToggleComplete?: (id: string) => void;
     onEditClick: () => void;
-    onDelete?: (id: string) => void;
+    onDeleteSuccess?: () => void;
 }
 
-export default function ListElemView({
-    task,
-    onToggleComplete,
-    onEditClick,
-    onDelete,
-}: ListElemViewProps) {
+export default function ListElemView({ task, onEditClick, onDeleteSuccess }: ListElemViewProps) {
     const navigate = useNavigate();
+    const { toggleTaskComplete, deleteTask } = useTasks();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const handleCardClick = (e: React.MouseEvent) => {
@@ -30,7 +26,8 @@ export default function ListElemView({
 
     const handleConfirmDelete = () => {
         setShowDeleteModal(false);
-        onDelete?.(task.id);
+        deleteTask(task.id);
+        onDeleteSuccess?.();
     };
 
     return (
@@ -41,7 +38,7 @@ export default function ListElemView({
                         type="checkbox"
                         className="task-checkbox"
                         checked={task.isChecked}
-                        onChange={() => onToggleComplete?.(task.id)}
+                        onChange={() => toggleTaskComplete(task.id)}
                     />
                     <div className="task-details">
                         <h3 className="task-title">{task.name}</h3>
@@ -60,16 +57,14 @@ export default function ListElemView({
                     <button type="button" className="btn-action edit-btn" onClick={onEditClick} title="Edit Task">
                         ✏️
                     </button>
-                    {onDelete && (
-                        <button
-                            type="button"
-                            className="btn-action delete-btn"
-                            onClick={() => setShowDeleteModal(true)}
-                            title="Delete Task"
-                        >
-                            🗑️
-                        </button>
-                    )}
+                    <button
+                        type="button"
+                        className="btn-action delete-btn"
+                        onClick={() => setShowDeleteModal(true)}
+                        title="Delete Task"
+                    >
+                        🗑️
+                    </button>
                 </div>
             </div>
 

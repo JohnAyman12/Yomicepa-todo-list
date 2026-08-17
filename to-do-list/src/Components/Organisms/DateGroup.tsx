@@ -5,17 +5,11 @@ import '../../styles/DateGroup.css'
 interface DateGroupProps {
     date: string;
     tasks: listItm[];
-    onToggleComplete: (id: string) => void;
-    onDelete: (id: string) => void;
-    onEdit: (id: string, updatedData: Partial<Omit<listItm, 'id'>>) => void;
 }
 
 export default function DateGroup({
     date,
     tasks,
-    onToggleComplete,
-    onDelete,
-    onEdit,
 }: DateGroupProps) {
     const formatDateHeader = (dateString: string) => {
         if (!dateString) return 'No Date';
@@ -37,10 +31,7 @@ export default function DateGroup({
                 {tasks.map((task) => (
                     <ListElem
                         key={task.id}
-                        {...task}
-                        onToggleComplete={onToggleComplete}
-                        onDelete={onDelete}
-                        onEdit={onEdit}
+                        task={task}
                     />
                 ))}
             </div>

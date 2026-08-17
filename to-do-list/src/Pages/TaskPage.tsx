@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTasks } from '../Context/TaskContext/UseTasks';
 import ListElem from '../Components/Templates/ListElem';
 import ThemeToggle from '../Components/Atoms/ThemeToggle';
@@ -7,7 +7,7 @@ import '../styles/TaskPage.css';
 export default function TaskPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { tasks, toggleTaskComplete, deleteTask, editTask } = useTasks();
+    const { tasks } = useTasks();
 
     const task = tasks.find((t) => t.id === id);
 
@@ -28,13 +28,8 @@ export default function TaskPage() {
             ) : (
                 <main className="task-page-content">
                     <ListElem
-                        {...task}
-                        onToggleComplete={toggleTaskComplete}
-                        onDelete={(taskId) => {
-                            deleteTask(taskId);
-                            navigate('/');
-                        }}
-                        onEdit={editTask}
+                        task={task}
+                        onDeleteSuccess={() => navigate('/')}
                     />
                 </main>
             )}

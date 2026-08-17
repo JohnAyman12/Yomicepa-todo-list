@@ -5,7 +5,7 @@ import TaskListGroup from '../Components/Templates/TaskListGroup';
 import '../styles/Homepage.css';
 
 export default function HomePage() {
-    const { tasks, toggleTaskComplete, deleteTask, editTask } = useTasks();
+    const { tasks } = useTasks();
 
     return (
         <div className="homepage-container">
@@ -26,9 +26,9 @@ export default function HomePage() {
 
                 <TaskListGroup
                     tasks={tasks}
-                    onToggleComplete={toggleTaskComplete}
-                    onDelete={deleteTask}
-                    onEdit={editTask}
+                    // onToggleComplete={toggleTaskComplete}
+                    // onDelete={deleteTask}
+                    // onEdit={editTask}
                 />
             </section>
         </div>
