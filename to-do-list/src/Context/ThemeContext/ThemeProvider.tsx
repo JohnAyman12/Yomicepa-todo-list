@@ -3,6 +3,24 @@ import { ThemeContext, type Theme, type ThemePreference } from './ThemeContext';
 
 const THEME_STORAGE_KEY = 'todo_app_theme';
 
+const getSystemTheme = (): Theme =>
+    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+const resolveEffectiveTheme = (pref: ThemePreference): Theme => {
+    switch (pref) {
+        case 'light':
+            return 'light';
+        case 'dark':
+            return 'dark';
+        case 'system':
+            return getSystemTheme();
+        default: {
+            const _exhaustiveCheck: never = pref;
+            return _exhaustiveCheck;
+        }
+    }
+};
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
     const [preference, setPreference] = useState<ThemePreference>(() => {
         try {
@@ -16,48 +34,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         return 'system';
     });
 
-    const getSystemTheme = (): Theme =>
-        window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-
-    const resolveEffectiveTheme = (pref: ThemePreference): Theme => {
-        switch (pref) {
-            case 'light':
-                return 'light';
-            case 'dark':
-                return 'dark';
-            case 'system':
-                return getSystemTheme();
-            default: {
-                const _exhaustiveCheck: never = pref;
-                return _exhaustiveCheck;
-            }
-        }
-    };
-
     const [activeTheme, setActiveTheme] = useState<Theme>(() =>
         resolveEffectiveTheme(preference)
     );
 
     useEffect(() => {
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-        const getSystemTheme = (): Theme =>
-            mediaQuery.matches ? 'dark' : 'light';
-
-        const resolveEffectiveTheme = (pref: ThemePreference): Theme => {
-            switch (pref) {
-                case 'light':
-                    return 'light';
-                case 'dark':
-                    return 'dark';
-                case 'system':
-                    return getSystemTheme();
-                default: {
-                    const _exhaustiveCheck: never = pref;
-                    return _exhaustiveCheck;
-                }
-            }
-        };
 
         const updateActiveTheme = () => {
             const currentEffectiveTheme = resolveEffectiveTheme(preference);
@@ -96,16 +78,17 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
                     return _exhaustiveCheck;
                 }
             }
-
-            try {
-                localStorage.setItem(THEME_STORAGE_KEY, next);
-            } catch (e) {
-                console.error('Failed to save theme preference to localStorage:', e);
-            }
-
             return next;
         });
     };
+
+    useEffect(() => {
+        try {
+            localStorage.setItem(THEME_STORAGE_KEY, preference);
+        } catch (e) {
+            console.error('Failed to save theme preference to localStorage:', e);
+        }
+    }, [preference]);
 
     return (
         <ThemeContext.Provider value={{ theme: activeTheme, preference, toggleTheme }}>
