@@ -1,0 +1,13 @@
+.task-list-controls {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1.25rem;
+    width: 100%;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}

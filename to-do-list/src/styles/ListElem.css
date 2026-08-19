@@ -1,0 +1,45 @@
+.task-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-left: 5px solid var(--text-muted);
+    border-radius: 10px;
+    padding: 1.25rem;
+    transition: all 0.2s ease-in-out;
+    box-shadow: var(--shadow-sm);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--text-muted);
+    box-shadow: var(--shadow-md);
+}
+
+.task-card[data-priority="low"] {
+    border-left-color: #10b981;
+}
+
+.task-card[data-priority="medium"] {
+    border-left-color: #f59e0b;
+}
+
+.task-card[data-priority="high"] {
+    border-left-color: #ef4444;
+}
+
+.task-card.completed {
+    opacity: 0.6;
+}
+
+.task-card.completed .task-title {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+.task-card.editing {
+    align-items: stretch;
+}

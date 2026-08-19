@@ -1,19 +1,24 @@
-import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Homepage from './Pages/HomePage';
+import TaskPage from './Pages/TaskPage'
+import NotFoundPage from './Pages/NotFoundPage';
+import { TaskProvider } from './Context/TaskContext/TaskProvider';
+import { ThemeProvider } from './Context/ThemeContext/ThemeProvider';
 
-function App() {
-
+export default function App() {
   return (
-    <><main>
-      <h2>Tasks</h2>
-      <form className="form">
-        <input type="text" className="form-input" />
-        <button type="submit" className="btn">add task</button>
-      </form>
-      <ul className="list"></ul>
-      <button className="test-btn">click me</button>
-    </main>
-    </>
-  )
+    <ThemeProvider>
+      <TaskProvider>
+        <div className="app-container">
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Homepage />} />
+              <Route path="/task/:id" element={<TaskPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </TaskProvider>
+    </ThemeProvider>
+  );
 }
-
-export default App
