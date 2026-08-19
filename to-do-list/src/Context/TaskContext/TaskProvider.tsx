@@ -70,16 +70,16 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const updateTasksAndPersist = useCallback((updateFn: (prev: listItm[]) => listItm[]) => {
-        let nextTasksState: listItm[] = [];
-
-        setTasks((prevTasks) => {
-            nextTasksState = updateFn(prevTasks);
-            return nextTasksState;
-        });
-
-        const err = saveToLocalStorage(nextTasksState);
-        setStorageError((prevError) => (prevError !== err ? err : prevError));
+        setTasks(updateFn);
     }, []);
+
+    useEffect(() => {
+        const err = saveToLocalStorage(tasks);
+
+        if (err !== storageError) {
+            queueMicrotask(() => setStorageError(err));
+        }
+    }, [tasks, storageError]);
 
     const clearStorageError = useCallback(() => {
         setStorageError(null);
