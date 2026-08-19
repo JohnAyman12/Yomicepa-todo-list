@@ -1,15 +1,9 @@
-import React, { useState } from 'react';
+import { useState, type SyntheticEvent } from 'react';
 import { type listItm, type priorityState } from '../../Types/types';
 import { useTasks } from '../../Context/TaskContext/UseTasks';
+import { parseTaskFormData } from '../../utils/parseTaskFormData';
 import TaskFields from '../Molecules/TaskFields';
 import '../../styles/ListElemEdit.css';
-
-const VALID_PRIORITIES: priorityState[] = ['high', 'medium', 'low'];
-
-// Type Guard to validate form input against priorityState
-const isValidPriority = (value: unknown): value is priorityState => {
-    return typeof value === 'string' && VALID_PRIORITIES.includes(value as priorityState);
-};
 
 interface ListElemEditProps {
     task: listItm;
@@ -21,34 +15,19 @@ export default function ListElemEdit({ task, onCancel }: ListElemEditProps) {
     const [priority, setPriority] = useState<priorityState>(task.priority);
     const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError(null);
 
         const formData = new FormData(e.currentTarget);
+        const { parsed, error: validationError } = parseTaskFormData(formData, task.priority);
 
-        const name = String(formData.get('name') ?? '').trim();
-        const description = String(formData.get('description') ?? '').trim();
-        const date = String(formData.get('date') ?? '');
-        const time = String(formData.get('time') ?? '');
-        const rawPriority = formData.get('priority');
-
-        if (!name) {
-            setError('Task name cannot be empty.');
+        if (validationError || !parsed) {
+            setError(validationError ?? 'Invalid form input.');
             return;
         }
 
-        const validPriority: priorityState = isValidPriority(rawPriority)
-            ? rawPriority
-            : task.priority;
-
-        editTask(task.id, {
-            name,
-            description,
-            date,
-            time,
-            priority: validPriority,
-        });
+        editTask(task.id, parsed);
 
         onCancel();
     };

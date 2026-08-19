@@ -1,4 +1,4 @@
-import React, { useState, useId } from 'react';
+import { useState, useId, type ChangeEvent } from 'react';
 import { type listItm, type priorityState, PRIORITY_OPTIONS } from '../../Types/types';
 
 interface TaskFieldsProps {
@@ -19,7 +19,7 @@ export default function TaskFields({ initialValues, onPriorityChange }: TaskFiel
         initialValues?.priority || "medium"
     );
 
-    const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handlePriorityChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const selected = e.target.value as priorityState;
         setPriority(selected);
         onPriorityChange?.(selected);

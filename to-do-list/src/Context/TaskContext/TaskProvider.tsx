@@ -34,12 +34,7 @@ const parseAndValidateTasks = (rawJson: string | null): listItm[] => {
             return [];
         }
 
-        const isValid = parsed.every(isListItm);
-        if (!isValid) {
-            return [];
-        }
-
-        return parsed as listItm[];
+        return parsed.filter(isListItm);
     } catch {
         return [];
     }
@@ -75,12 +70,15 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const updateTasksAndPersist = useCallback((updateFn: (prev: listItm[]) => listItm[]) => {
+        let nextTasksState: listItm[] = [];
+
         setTasks((prevTasks) => {
-            const nextTasks = updateFn(prevTasks);
-            const err = saveToLocalStorage(nextTasks);
-            setStorageError(err);
-            return nextTasks;
+            nextTasksState = updateFn(prevTasks);
+            return nextTasksState;
         });
+
+        const err = saveToLocalStorage(nextTasksState);
+        setStorageError((prevError) => (prevError !== err ? err : prevError));
     }, []);
 
     const clearStorageError = useCallback(() => {
